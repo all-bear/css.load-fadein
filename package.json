@@ -1,0 +1,14 @@
+{
+  "name": "load-fadein",
+  "version": "1.0.0",
+  "description": "css lib, which controls appearing of an elements",
+  "scripts": {
+    "start": "gulp sass"
+  },
+  "author": "Oleh Biriukov",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0"
+  }
+}

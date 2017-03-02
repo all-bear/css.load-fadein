@@ -1,0 +1,81 @@
+$opacity-step: 0.1;
+$opacity-dimension: 10;
+$default-speed: 1;
+$max-speed: 50;
+$default-timing-function: linear;
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@mixin animation($value, $prop) {
+  @if ($prop) {
+    animation-#{$prop}: #{$value};
+    -moz-animation-#{$prop}: #{$value};
+    -webkit-animation-#{$prop}: #{$value};
+    -o-animation-#{$prop}: #{$value};
+  } @else {
+    animation: #{$value};
+    -moz-animation: #{$value};
+    -webkit-animation: #{$value};
+    -o-animation: #{$value};
+  }
+}
+
+.fadein-on-load {
+  $opacity: 0;
+  @while $opacity <= 1 {
+    $animation-name: fadein-opacity-#{$opacity * $opacity-dimension};
+    &.fadein-to-#{$opacity * $opacity-dimension} {
+      opacity: $opacity;
+      @include animation(#{$animation-name} #{$default-speed}s #{$default-timing-function}, false);
+    }
+    
+    $speed: 1;
+    $delay-animation-name: fadein-opacity-delay-#{$speed};
+    @while $speed <= $max-speed {
+      &.fadein-delay-by-#{$speed}s {
+        @include animation(#{$delay-animation-name + ', ' + $animation-name}, name);
+        @include animation(#{'0s, ' + $speed}s, delay);
+      }
+      $speed: $speed + 1;
+      @include keyframes(#{$delay-animation-name}) {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+    }
+      
+    @include keyframes(#{$animation-name}) {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: #{$opacity};
+      }
+    }
+    $opacity: $opacity + $opacity-step;
+  }
+
+  $speed: 1;
+  @while $speed <= $max-speed {
+    &.fadein-by-#{$speed}s {
+      @include animation(#{$speed}s, duration);
+    }
+    $speed: $speed + 1;
+  }
+}
